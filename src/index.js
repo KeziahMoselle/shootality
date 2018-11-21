@@ -48,7 +48,7 @@ function setup () {
   
   // Player position
   player.x = 10
-  player.y = 50
+  player.y = 40
   // Display the sprite
   app.stage.addChild(player)
 
@@ -58,12 +58,16 @@ function setup () {
   for(let i = 0; i < numberOfEnemies; i++) {
     let enemy = new Sprite(resources['./assets/enemy.png'].texture)
     let x = (spacing * i * 1.5) + 150
-    let y = 50
+    let y = 40
 
     enemy.x = x
     enemy.y = y
 
     app.stage.addChild(enemy)
+    app.ticker.add(delta => EnemyMove(delta))
+    function EnemyMove(delta) {
+      enemy.x += -2
+    }
   }
 }
 
