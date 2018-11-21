@@ -5,8 +5,8 @@ let window
 
 app.on('ready', () => {
   window = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     backgroundColor: '#eeeeee',
     title: 'GitHub Game Off 2018'
   })
