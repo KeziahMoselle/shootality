@@ -16,8 +16,8 @@ if (!utils.isWebGLSupported()) {
 }
 
 let app = new Application({
-  width: 1000,
-  height: 800,
+  width: 600,
+  height: 200,
   antialias: true,
   transparent: false,
   resolution: 1
@@ -28,16 +28,47 @@ app.renderer.view.style.display = 'block'
 app.renderer.autoResize = true
 app.renderer.resize(window.innerWidth, window.innerHeight)
 
-// Create a Sprite
+// Load images
 PIXI.loader
   .add('./assets/player.png')
+  .add('./assets/enemy.png')
+  .on('progress', progressHandler)
   .load(setup)
+
+// Progress
+function progressHandler (loader, resource) {
+  console.log(`Loading : ${resource.url} [${loader.progress}%]`)
+}
 
 // Launched when PIXI load images
 function setup () {
+  console.log('Loaded !')
+  // Create the Sprite
   let player = new Sprite(resources['./assets/player.png'].texture)
+  
+  // Player position
+  player.x = 10
+  player.y = 50
   // Display the sprite
   app.stage.addChild(player)
+
+  // Generate enemies
+  const numberOfEnemies = 5
+  const spacing = 64
+  for(let i = 0; i < numberOfEnemies; i++) {
+    let enemy = new Sprite(resources['./assets/enemy.png'].texture)
+    let x = (spacing * i * 1.5) + 150
+    let y = 50
+
+    enemy.x = x
+    enemy.y = y
+
+    app.stage.addChild(enemy)
+  }
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 // Render the view
