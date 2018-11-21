@@ -7,7 +7,7 @@ app.on('ready', () => {
   window = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: '#242424',
+    backgroundColor: '#eeeeee',
     title: 'GitHub Game Off 2018'
   })
   window.loadFile(path.join(__dirname, 'index.html'))
