@@ -1,5 +1,6 @@
 const PIXI = require('pixi.js')
 const keyboard = require('./libs/keyboard')
+const hit = require('./libs/hit')
 
 // ALIASES
 const Application = PIXI.Application
@@ -44,31 +45,23 @@ function progressHandler (loader, resource) {
 
 // Entities
 
-let player, state
+let player
+let enemies = []
+let state
+let message
 
 // Launched when PIXI load images
 function setup () {
   console.log('Loaded !')
   // Create the player sprite
   player = new Sprite(resources['./assets/player.png'].texture)
-  // Player position
   player.x = 10
   player.y = 40
-  // Display the sprite
   app.stage.addChild(player)
   // Generate enemies
   generateEnemies(randomInt(4, 10))
   // Keyboard
-  const right = keyboard('ArrowRight')
-  const left = keyboard('ArrowLeft')
   const spacebar = keyboard(' ')
-
-  right.press = () => {
-    console.log('ArrowRight pressed')
-  }
-  left.press = () => {
-    console.log('ArrowLeft pressed')
-  }
   spacebar.press = () => {
     console.log('SpaceBar pressed')
   }
@@ -83,19 +76,25 @@ function gameLoop (delta) {
 }
 
 function play (delta) {
-  
+  enemies.forEach(enemy => {
+    if (hit(player, enemy)) {
+      console.log('Hit')
+    } else {
+      console.log('No collision')
+    }
+  })
 }
 
 function generateEnemies (numberOfEnemies) {
-  const spacing = 64
-  for(let i = 0; i < numberOfEnemies; i++) {
+  const spacing = 100
+  for (let i = 0; i < numberOfEnemies; i++) {
     let enemy = new Sprite(resources['./assets/enemy.png'].texture)
     let x = (spacing * i * 1.5) + 150
     let y = 40
 
     enemy.x = x
     enemy.y = y
-
+    enemies.push(enemy)
     app.stage.addChild(enemy)
     app.ticker.add(delta => EnemyMove(delta, enemy))
   }
