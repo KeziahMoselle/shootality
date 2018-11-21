@@ -1,4 +1,5 @@
 const PIXI = require('pixi.js')
+const keyboard = require('./libs/keyboard')
 
 // ALIASES
 const Application = PIXI.Application
@@ -40,20 +41,52 @@ function progressHandler (loader, resource) {
   console.log(`Loading : ${resource.url} [${loader.progress}%]`)
 }
 
+
+// Entities
+
+let player, state
+
 // Launched when PIXI load images
 function setup () {
   console.log('Loaded !')
-  // Create the Sprite
-  let player = new Sprite(resources['./assets/player.png'].texture)
-  
+  // Create the player sprite
+  player = new Sprite(resources['./assets/player.png'].texture)
   // Player position
   player.x = 10
   player.y = 40
   // Display the sprite
   app.stage.addChild(player)
-
   // Generate enemies
-  const numberOfEnemies = 5
+  generateEnemies(randomInt(4, 10))
+  // Keyboard
+  const right = keyboard('ArrowRight')
+  const left = keyboard('ArrowLeft')
+  const spacebar = keyboard(' ')
+
+  right.press = () => {
+    console.log('ArrowRight pressed')
+  }
+  left.press = () => {
+    console.log('ArrowLeft pressed')
+  }
+  spacebar.press = () => {
+    console.log('SpaceBar pressed')
+  }
+  // Define the default state of the game
+  state = play
+  // Game Loop
+  app.ticker.add(delta => gameLoop(delta))
+}
+
+function gameLoop (delta) {
+  state(delta)
+}
+
+function play (delta) {
+  
+}
+
+function generateEnemies (numberOfEnemies) {
   const spacing = 64
   for(let i = 0; i < numberOfEnemies; i++) {
     let enemy = new Sprite(resources['./assets/enemy.png'].texture)
@@ -64,14 +97,14 @@ function setup () {
     enemy.y = y
 
     app.stage.addChild(enemy)
-    app.ticker.add(delta => EnemyMove(delta))
-    function EnemyMove(delta) {
-      enemy.x += -2
-    }
+    app.ticker.add(delta => EnemyMove(delta, enemy))
+  }
+  function EnemyMove (delta, enemy) {
+    enemy.x += -2
   }
 }
 
-function randomInt(min, max) {
+function randomInt (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
