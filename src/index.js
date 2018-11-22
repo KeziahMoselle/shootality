@@ -61,18 +61,31 @@ function setup () {
   app.stage.addChild(player)
   // Generate enemies
   generateEnemies(randomInt(4, 10))
+  // Generate text
+  text = new PIXI.Text('Press Enter to play', {
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff
+  })
+  text.x = 300
+  app.stage.addChild(text)
   // Keyboard
   const spacebar = keyboard(' ')
+  const enter = keyboard('Enter')
   spacebar.press = () => {
     spacebarPressed = true
+    // Show SpaceBar icon
   }
   spacebar.release = () => {
     spacebarPressed = false
+    // Hide SpaceBar icon
   }
-  // Define the default state of the game
-  state = play
-  // Game Loop
-  app.ticker.add(delta => gameLoop(delta))
+  enter.press = () => {
+    // Define the default state of the game
+    state = play
+    // Game Loop
+    app.ticker.add(delta => gameLoop(delta))
+  }
 }
 
 function gameLoop (delta) {
@@ -88,15 +101,21 @@ function play (delta) {
     enemy.x += -2
     // Collisions
     if (hit(player, enemy) && spacebarPressed) {
+      // Kill the enemy
       enemy.alpha = 0
-    } else {
+      text.text = ''
+    }
+    
+    if (hit(player, enemy)) {
+      // The player has been hitted
       playerHit = true
+    } else {
+      playerHit = false
     }
     // If the enemy hit the player
     if (playerHit) {
       player.alpha = 0.5
     } else {
-      spacebarPressed = false
       player.alpha = 1
     }
   })
