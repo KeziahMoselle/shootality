@@ -75,6 +75,9 @@ function setup () {
   const enter = keyboard('Enter')
   spacebar.press = () => {
     spacebarPressed = true
+    setInterval(() => {
+      spacebarPressed = false
+    }, 50);
     // Show SpaceBar icon
   }
   spacebar.release = () => {
