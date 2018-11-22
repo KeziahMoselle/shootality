@@ -47,6 +47,7 @@ function progressHandler (loader, resource) {
 
 let player
 let enemies = []
+let text
 let state
 let playerHit = false
 let spacebarPressed = false
