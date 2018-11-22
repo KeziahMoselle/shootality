@@ -56,13 +56,16 @@ let spacebarPressed = false
 // Launched when PIXI load images
 function setup () {
   console.log('Loaded !')
+  
   // Create the player sprite
   player = new Sprite(resources['./assets/player.png'].texture)
   player.x = 10
   player.y = 200
   app.stage.addChild(player)
+
   // Generate enemies
   generateEnemies(randomInt(4, 10))
+
   // Generate text
   text = new PIXI.Text('Press Enter to play', {
     fontFamily: 'Arial',
@@ -70,13 +73,19 @@ function setup () {
     fill: 0xffffff
   })
   text.x = 300
+  text.y = 20
   app.stage.addChild(text)
+
   // Generate space button
   space = new Sprite(resources['./assets/space.png'].texture)
   space.x = 10
-  space.y = 10
-  space.alpha = 0
+  space.y = 20
+  space.alpha = 0.5
   app.stage.addChild(space)
+
+  // Define the default state of the game
+  state = play
+
   // Keyboard
   const spacebar = keyboard(' ')
   const enter = keyboard('Enter')
@@ -91,11 +100,9 @@ function setup () {
   spacebar.release = () => {
     spacebarPressed = false
     // Hide SpaceBar icon
-    space.alpha = 0
+    space.alpha = 0.5
   }
   enter.press = () => {
-    // Define the default state of the game
-    state = play
     // Game Loop
     app.ticker.add(delta => gameLoop(delta))
   }
@@ -110,13 +117,15 @@ function play (delta) {
   playerHit = false
 
   enemies.forEach(enemy => {
+    console.log(enemy)
     // Move the enemies
     enemy.x += -8
     // Collisions
     if (hit(player, enemy) && spacebarPressed) {
       // Kill the enemy
-      enemy.alpha = 0
+      enemy.visible = 0
       text.text = ''
+      state = end
     }
     
     if (hit(player, enemy)) {
