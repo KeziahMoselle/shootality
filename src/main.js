@@ -8,7 +8,8 @@ app.on('ready', () => {
     width: 800,
     height: 400,
     backgroundColor: '#eeeeee',
-    title: 'GitHub Game Off 2018'
+    title: 'GitHub Game Off 2018',
+    icon: path.join(__dirname, 'assets', 'player.png')
   })
   window.loadFile(path.join(__dirname, 'index.html'))
   window.webContents.openDevTools()
