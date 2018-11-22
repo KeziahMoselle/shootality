@@ -18,8 +18,8 @@ if (!utils.isWebGLSupported()) {
 }
 
 let app = new Application({
-  width: 600,
-  height: 200,
+  width: 800,
+  height: 400,
   antialias: true,
   transparent: false,
   resolution: 1
@@ -48,7 +48,8 @@ function progressHandler (loader, resource) {
 let player
 let enemies = []
 let state
-let message
+let playerHit = false
+let spacebarPressed = false
 
 // Launched when PIXI load images
 function setup () {
@@ -56,14 +57,15 @@ function setup () {
   // Create the player sprite
   player = new Sprite(resources['./assets/player.png'].texture)
   player.x = 10
-  player.y = 40
+  player.y = 200
   app.stage.addChild(player)
   // Generate enemies
   generateEnemies(randomInt(4, 10))
   // Keyboard
   const spacebar = keyboard(' ')
   spacebar.press = () => {
-    console.log('SpaceBar pressed')
+    spacebarPressed = true
+    console.log(spacebarPressed)
   }
   // Define the default state of the game
   state = play
@@ -72,17 +74,34 @@ function setup () {
 }
 
 function gameLoop (delta) {
+  // Switch between play and end
   state(delta)
 }
 
 function play (delta) {
+  playerHit = false
+
   enemies.forEach(enemy => {
-    if (hit(player, enemy)) {
-      console.log('Hit')
+    // Move the enemies
+    enemy.x += -2
+    // Collisions
+    if (hit(player, enemy) && spacebarPressed) {
+      enemy.alpha = 0
     } else {
-      console.log('No collision')
+      playerHit = true
+    }
+    // If the enemy hit the player
+    if (playerHit) {
+      player.alpha = 0.5
+    } else {
+      spacebarPressed = false
+      player.alpha = 1
     }
   })
+}
+
+function end () {
+  // End scene when enemies.length === 0
 }
 
 function generateEnemies (numberOfEnemies) {
@@ -90,16 +109,12 @@ function generateEnemies (numberOfEnemies) {
   for (let i = 0; i < numberOfEnemies; i++) {
     let enemy = new Sprite(resources['./assets/enemy.png'].texture)
     let x = (spacing * i * 1.5) + 150
-    let y = 40
+    let y = 200
 
     enemy.x = x
     enemy.y = y
     enemies.push(enemy)
     app.stage.addChild(enemy)
-    app.ticker.add(delta => EnemyMove(delta, enemy))
-  }
-  function EnemyMove (delta, enemy) {
-    enemy.x += -2
   }
 }
 
