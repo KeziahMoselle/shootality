@@ -35,6 +35,7 @@ PIXI.loader
   .add('./assets/player.png')
   .add('./assets/enemy.png')
   .add('./assets/space.png')
+  .add('./assets/enter.png')
   .on('progress', progressHandler)
   .load(setup)
 
@@ -45,13 +46,14 @@ function progressHandler (loader, resource) {
 
 
 // Entities
-
 let player
 let enemies = []
-let text
+let enterBtn
+let scoreText
 let state
 let playerHit = false
 let spacebarPressed = false
+let score = 0
 
 // Launched when PIXI load images
 function setup () {
@@ -66,15 +68,19 @@ function setup () {
   // Generate enemies
   generateEnemies(randomInt(4, 10))
 
-  // Generate text
-  text = new PIXI.Text('Press Enter to play', {
-    fontFamily: 'Arial',
-    fontSize: 24,
-    fill: 0xffffff
-  })
-  text.x = 300
-  text.y = 20
-  app.stage.addChild(text)
+  // Generate "Press enter to begin"
+  enterBtn = new Sprite(resources['./assets/enter.png'].texture)
+  enterBtn.x = 250
+  enterBtn.y = 20
+  app.stage.addChild(enterBtn)
+
+  setInterval(() => {
+    if (enterBtn.alpha === 1) {
+      enterBtn.alpha = 0.5
+    } else {
+      enterBtn.alpha = 1
+    }
+  }, 1000);
 
   // Generate space button
   space = new Sprite(resources['./assets/space.png'].texture)
@@ -82,6 +88,16 @@ function setup () {
   space.y = 20
   space.alpha = 0.5
   app.stage.addChild(space)
+
+  // Generate text
+  scoreText = new PIXI.Text('Awaiting score...', {
+    fontFamily: 'Arial',
+    fontSize: 24,
+    fill: 0xffffff
+  })
+  scoreText.x = 570
+  scoreText.y = 35
+  app.stage.addChild(scoreText)
 
   // Define the default state of the game
   state = play
@@ -102,7 +118,10 @@ function setup () {
     // Hide SpaceBar icon
     space.alpha = 0.5
   }
+  // When Enter is pressed, begin the game
   enter.press = () => {
+    enterBtn.visible = false
+    scoreText.text = `[SCORE] ${score} points`
     // Game Loop
     app.ticker.add(delta => gameLoop(delta))
   }
@@ -117,15 +136,18 @@ function play (delta) {
   playerHit = false
 
   enemies.forEach(enemy => {
-    console.log(enemy)
     // Move the enemies
-    enemy.x += -8
+    enemy.x += -6
     // Collisions
     if (hit(player, enemy) && spacebarPressed) {
-      // Kill the enemy
+      // Hide the enemy
       enemy.visible = 0
-      text.text = ''
-      state = end
+      // Remove it from the array
+      const enemyId = enemies.indexOf(enemy)
+      enemies.splice(enemyId, 1)
+      // Increment the score
+      score += 1
+      scoreText.text = `[SCORE] ${score} points`
     }
     
     if (hit(player, enemy)) {
