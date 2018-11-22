@@ -65,7 +65,9 @@ function setup () {
   const spacebar = keyboard(' ')
   spacebar.press = () => {
     spacebarPressed = true
-    console.log(spacebarPressed)
+  }
+  spacebar.release = () => {
+    spacebarPressed = false
   }
   // Define the default state of the game
   state = play
