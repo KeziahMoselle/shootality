@@ -34,6 +34,7 @@ app.renderer.resize(window.innerWidth, window.innerHeight)
 PIXI.loader
   .add('./assets/player.png')
   .add('./assets/enemy.png')
+  .add('./assets/space.png')
   .on('progress', progressHandler)
   .load(setup)
 
@@ -70,6 +71,12 @@ function setup () {
   })
   text.x = 300
   app.stage.addChild(text)
+  // Generate space button
+  space = new Sprite(resources['./assets/space.png'].texture)
+  space.x = 10
+  space.y = 10
+  space.alpha = 0
+  app.stage.addChild(space)
   // Keyboard
   const spacebar = keyboard(' ')
   const enter = keyboard('Enter')
@@ -79,10 +86,12 @@ function setup () {
       spacebarPressed = false
     }, 50);
     // Show SpaceBar icon
+    space.alpha = 1
   }
   spacebar.release = () => {
     spacebarPressed = false
     // Hide SpaceBar icon
+    space.alpha = 0
   }
   enter.press = () => {
     // Define the default state of the game
@@ -102,7 +111,7 @@ function play (delta) {
 
   enemies.forEach(enemy => {
     // Move the enemies
-    enemy.x += -2
+    enemy.x += -8
     // Collisions
     if (hit(player, enemy) && spacebarPressed) {
       // Kill the enemy
