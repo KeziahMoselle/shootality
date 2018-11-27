@@ -1,4 +1,4 @@
-# game-off-2018
+# Shootality
 Trying the GitHub Game Off 2018
 
 ## Goal "Hybrid"
@@ -11,6 +11,7 @@ The idea was to press the `spacebar` accordingly with the music in the backgroun
 
 ### Home screen
 ![home](https://puu.sh/C8KwH/aefd499780.gif)
+### Gameplay
 ![gameplay](https://puu.sh/C8KxP/1826c31b58.gif)
 
 ## Built with
