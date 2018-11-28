@@ -1,7 +1,7 @@
 # Shootality
 Trying the GitHub Game Off 2018
 
-[https://keziahmoselle.itch.io/shootality](https://keziahmoselle.itch.io/shootality)
+[https://itch.io/jam/game-off-2018/rate/335819](https://itch.io/jam/game-off-2018/rate/335819)
 
 ## Goal "Hybrid"
 The goal was to create a game which combined two types of game : shooter and rhythm game.
