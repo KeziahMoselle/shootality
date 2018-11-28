@@ -1,16 +1,32 @@
 {
-  "name": "game-off-2018",
+  "name": "shootality",
   "version": "1.0.0",
   "description": "Trying to make my first game.",
   "main": "./src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "build -mwl"
   },
   "dependencies": {
-    "electron": "^3.0.10",
     "pixi.js": "^4.8.2"
   },
-  "repository": "https://github.com/KeziahMoselle/game-off-2018.git",
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-builder": "^20.38.0"
+  },
+  "build": {
+    "appId": "com.electron.shootality",
+    "productName": "Shootality",
+    "win": {
+      "target": "NSIS",
+      "icon": "./build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "repository": "https://github.com/KeziahMoselle/shootality.git",
   "author": "KeziahMoselle <keziah.moselle@gmail.com>",
   "license": "MIT"
 }
