@@ -12,9 +12,10 @@ The idea was to press the `spacebar` accordingly with the music in the backgroun
 ## Preview
 
 ### Home screen
-![home](https://puu.sh/C8KwH/aefd499780.gif)
+![home](./.github/preview.png)
+
 ### Gameplay
-![gameplay](https://puu.sh/C8KxP/1826c31b58.gif)
+![gameplay](./.github/playing.gif)
 
 ## Built with
 
